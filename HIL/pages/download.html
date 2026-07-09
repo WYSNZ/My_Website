@@ -239,7 +239,7 @@
         <div class="download-container">
             <div class="download-intro">
                 <h3><i class="fas fa-info-circle"></i> <span data-i18n="dl.intro.heading">下载说明</span></h3>
-                <p data-i18n-html="dl.intro.text">HIL平台提供两种获取方式：<strong>直接安装版</strong>（一键安装，开箱即用）和<strong>Release版本</strong>（源码压缩包，适合自行编译部署）。<strong>软件已内置Python环境</strong>，可直接运行使用。但推荐做法是自行在电脑上安装好对应的Conda环境和依赖，以获得更好的兼容性和性能。下载完成后，请参考<a href="environment.html" style="color: var(--primary-color);">环境配置指南</a>完成环境搭建。</p>
+                <p data-i18n-html="dl.intro.text">HIL平台提供两种获取方式：<strong>下载安装方式</strong>（一键安装，开箱即用）和<strong>下载软件源码</strong>（源码压缩包，适合自行编译部署）。<strong>软件已内置Python环境</strong>，可直接运行使用。但推荐做法是自行在电脑上安装好对应的Conda环境和依赖，以获得更好的兼容性和性能。下载完成后，请参考<a href="environment.html" style="color: var(--primary-color);">环境配置指南</a>完成环境搭建。</p>
             </div>
 
             <div class="download-cards">
@@ -247,12 +247,12 @@
                     <div class="os-icon">
                         <i class="fab fa-windows"></i>
                     </div>
-                    <h3 data-i18n="dl.card.installer.title">直接安装版（分卷压缩）</h3>
-                    <p class="version" data-i18n="dl.card.installer.version">适用于 Windows 10/11 (64-bit) — 共5个分卷，解压后得到安装程序</p>
+                    <h3 data-i18n="dl.card.installer.title">下载安装方式</h3>
+                    <p class="version" data-i18n="dl.card.installer.version">适用于 Windows 10/11 (64-bit) — 一键安装，开箱即用</p>
 
-                    <a href="javascript:void(0)" class="download-btn" onclick="downloadHilSetup()" id="dl-installer-btn">
+                    <a href="../source_windows/HILsetup.exe" class="download-btn" download="HILsetup.exe" id="dl-installer-btn">
                         <i class="fas fa-download"></i>
-                        <span data-i18n="dl.card.installer.download">下载全部分卷</span>
+                        <span data-i18n="dl.card.installer.download">下载安装程序</span>
                     </a>
                     
                     <a href="environment.html" class="env-link">
@@ -265,12 +265,12 @@
                     <div class="os-icon">
                         <i class="fas fa-file-archive"></i>
                     </div>
-                    <h3 data-i18n="dl.card.release.title">Release 版本</h3>
+                    <h3 data-i18n="dl.card.release.title">下载软件源码</h3>
                     <p class="version" data-i18n="dl.card.release.version">适用于 Windows 10/11 (64-bit) — 源码压缩包，灵活部署</p>
 
                     <a href="../source_windows/release.zip" class="download-btn" download="HIL_release.zip">
                         <i class="fas fa-download"></i>
-                        <span data-i18n="dl.card.release.download">下载 Release 压缩包</span>
+                        <span data-i18n="dl.card.release.download">下载源码压缩包</span>
                     </a>
                     
                     <a href="environment.html" class="env-link">
@@ -290,51 +290,6 @@
     </div>
 
     <script>
-        var _dlBusy = false;
-        function downloadHilSetup() {
-            if (_dlBusy) return;
-            _dlBusy = true;
-            var files = [
-                'HILsetup.zip',
-                'HILsetup.z01',
-                'HILsetup.z02',
-                'HILsetup.z03',
-                'HILsetup.z04'
-            ];
-            var base = '../source_windows/';
-            var btn = document.getElementById('dl-installer-btn');
-            var btnSpan = btn.querySelector('span');
-            var origText = btnSpan.textContent;
-
-            btn.style.pointerEvents = 'none';
-            btn.style.opacity = '0.6';
-            btnSpan.textContent = I18N.translate('dl.card.installer.downloading');
-
-            var i = 0;
-            function next() {
-                if (i >= files.length) {
-                    btnSpan.textContent = I18N.translate('dl.card.installer.done');
-                    setTimeout(function() {
-                        btnSpan.textContent = origText;
-                        btn.style.pointerEvents = '';
-                        btn.style.opacity = '';
-                        _dlBusy = false;
-                    }, 2000);
-                    return;
-                }
-                var a = document.createElement('a');
-                a.href = base + files[i];
-                a.download = files[i];
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                i++;
-                setTimeout(next, 800);
-            }
-            next();
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             const hamburger = document.querySelector('.hamburger');
             const navMenu = document.querySelector('.nav-menu');
