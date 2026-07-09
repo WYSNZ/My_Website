@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page.environment.title_tag">环境配置 - HIL Platform</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .env-page {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .env-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            margin-bottom: 40px;
+        }
+        
+        .env-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .config-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .config-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .config-section h3 i {
+            color: var(--primary-color);
+        }
+        
+        .step-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-card:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--success-color);
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .code-block code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .download-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .download-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .download-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .download-link i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .download-link div {
+            flex: 1;
+        }
+        
+        .download-link h4 {
+            margin-bottom: 0.25rem;
+        }
+        
+        .download-link p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .warning-box {
+            display: flex;
+            gap: 12px;
+            padding: 1.5rem;
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid var(--warning-color);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-box i {
+            font-size: 1.5rem;
+            color: var(--warning-color);
+            flex-shrink: 0;
+        }
+        
+        .success-box {
+            display: flex;
+            gap: 12px;
+            padding: 1.5rem;
+            background: rgba(74, 222, 128, 0.1);
+            border-left: 4px solid var(--success-color);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .success-box i {
+            font-size: 1.5rem;
+            color: var(--success-color);
+            flex-shrink: 0;
+        }
+        
+        .info-box {
+            display: flex;
+            gap: 12px;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        .requirements-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .requirements-table th,
+        .requirements-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .requirements-table th {
+            background: rgba(102, 126, 234, 0.1);
+            font-weight: 600;
+        }
+        
+        .requirements-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="workflow.html" class="nav-link" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="environment.html" class="nav-link active" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="tutorial.html" class="nav-link" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="download.html" class="nav-link" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="technical.html" class="nav-link" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="faq.html" class="nav-link" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="env-page">
+        <div class="env-header">
+            <span class="section-badge" data-i18n="nav.environment">Environment Setup</span>
+            <h1 class="section-title" data-i18n="page.environment.title">环境配置指南</h1>
+            <p class="section-subtitle" data-i18n="page.environment.subtitle">详细的环境安装与配置教程，Windows系统</p>
+        </div>
+
+        <div class="env-container">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span data-i18n="env.back_home">返回首页</span>
+            </a>
+
+            <div class="config-section">
+                <h3><i class="fas fa-clipboard-list"></i> <span data-i18n="env.system_req.title">系统要求</span></h3>
+                <table class="requirements-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="env.system_req.col_component">组件</th>
+                            <th data-i18n="env.system_req.col_minimum">最低要求</th>
+                            <th data-i18n="env.system_req.col_recommended">推荐配置</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-i18n-html="env.system_req.os"><strong>操作系统</strong></td>
+                            <td data-i18n="env.system_req.os_min">Windows 10</td>
+                            <td data-i18n="env.system_req.os_rec">Windows 11</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n-html="env.system_req.gpu"><strong>GPU</strong></td>
+                            <td data-i18n="env.system_req.gpu_min">NVIDIA GPU</td>
+                            <td data-i18n="env.system_req.gpu_rec">NVIDIA RTX 4060 或更高</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n-html="env.system_req.ram"><strong>内存</strong></td>
+                            <td data-i18n="env.system_req.ram_min">16GB RAM</td>
+                            <td data-i18n="env.system_req.ram_rec">32GB RAM 或更高</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n-html="env.system_req.storage"><strong>存储空间</strong></td>
+                            <td data-i18n="env.system_req.storage_min">10GB</td>
+                            <td data-i18n="env.system_req.storage_rec">25GB</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n-html="env.system_req.python"><strong>Python</strong></td>
+                            <td data-i18n="env.system_req.python_min">Python 3.8.20</td>
+                            <td data-i18n="env.system_req.python_rec">Python 3.12.13</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n-html="env.system_req.cuda"><strong>CUDA</strong></td>
+                            <td data-i18n="env.system_req.cuda_min">CUDA 12.4（PyTorch自带）</td>
+                            <td data-i18n="env.system_req.cuda_rec">CUDA 12.4（PyTorch自带）</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="info-box" style="margin-top: 1rem;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <p data-i18n-html="env.info.builtin_python"><strong>重要提示：</strong>HIL软件已内置Python运行环境，配置CUDA和PyTorch后可直接运行但不推荐使用。<strong>推荐做法</strong>是自行在电脑上安装好对应的Conda环境和依赖，以获得更好的兼容性和性能表现。以下教程将指导您完成完整的环境配置。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3><i class="fas fa-check-circle"></i> <span data-i18n="env.prestep.title">前置步骤：检查GPU驱动CUDA兼容性</span></h3>
+                
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <p data-i18n-html="env.prestep.info">HIL平台使用<strong>PyTorch自带的CUDA 12.4</strong>进行GPU加速，<strong>无需单独安装CUDA Toolkit</strong>。但您的NVIDIA显卡驱动必须支持CUDA 12.4及以上版本。在开始环境配置前，请先检查驱动兼容性。</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title" data-i18n="env.prestep.step1_title">检查当前驱动CUDA版本</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n="env.prestep.step1_desc">打开命令提示符或PowerShell，运行以下命令：</p>
+                    <div class="code-block">
+                        <code>nvidia-smi</code>
+                    </div>
+                    <p style="margin-top: 1rem;" data-i18n-html="env.prestep.step1_find">在输出信息中找到 <strong>"CUDA Version"</strong> 一行，例如：</p>
+                    <div class="code-block">
+                        <code>| NVIDIA-SMI 555.85       Driver Version: 555.85       CUDA Version: 12.5 |</code>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title" data-i18n="env.prestep.step2_title">判断是否需要更新驱动</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n-html="env.prestep.step2_compatible">如果显示的 <strong>CUDA Version ≥ 12.4</strong>，则驱动兼容，可以继续下一步。</p>
+                    <p data-i18n="env.prestep.step2_update">如果CUDA Version &lt; 12.4（例如显示 11.8），则需要更新NVIDIA显卡驱动。请访问NVIDIA官网下载并安装最新驱动：</p>
+                    <div class="download-links">
+                        <a href="https://www.nvidia.com/download/index.aspx" target="_blank" class="download-link">
+                            <i class="fas fa-external-link-alt"></i>
+                            <div>
+                                <h4 data-i18n="env.prestep.driver_dl_title">NVIDIA 驱动下载页面（点击进入官网）</h4>
+                                <p data-i18n="env.prestep.driver_dl_desc">选择您的显卡型号和操作系统下载最新驱动</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="warning-box" style="margin-top: 1rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <p data-i18n-html="env.prestep.warning"><strong>注意：</strong>驱动更新后需要重启计算机才能生效。安装完成后再次运行<code>nvidia-smi</code>确认CUDA版本已更新到12.4以上。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3><i class="fab fa-python"></i> <span data-i18n="env.step1.title">第一步：安装Miniconda</span></h3>
+                
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <p data-i18n-html="env.step1.info"><strong>Conda</strong> 是一个开源的包管理系统和环境管理系统。我们推荐使用<strong>Miniconda</strong>（Anaconda的精简版），它只包含conda和Python基础组件，体积更小。</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title" data-i18n="env.step1.step1_title">下载Miniconda</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n="env.step1.step1_desc">访问Miniconda官方下载页面，选择Windows 64位安装包：</p>
+                    <div class="download-links">
+                        <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank" class="download-link">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4 data-i18n="env.step1.dl_title">Miniconda 官方下载（点击进入）</h4>
+                                <p data-i18n="env.step1.dl_desc">选择Windows 64-bit安装包</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title" data-i18n="env.step1.step2_title">安装Miniconda</div>
+                    </div>
+                    <ol style="margin-left: 1.5rem; line-height: 2;">
+                        <li data-i18n="env.step1.install_step1">运行下载的 .exe 安装程序</li>
+                        <li data-i18n="env.step1.install_step2">点击 "Next" 继续</li>
+                        <li data-i18n="env.step1.install_step3">接受许可协议</li>
+                        <li data-i18n="env.step1.install_step4">选择 "Just Me"（推荐）或 "All Users"</li>
+                        <li data-i18n="env.step1.install_step5">选择安装路径（建议默认路径）</li>
+                        <li data-i18n-html="env.step1.install_step6"><strong>重要：</strong>勾选 "Add Miniconda3 to my PATH environment variable"</li>
+                        <li data-i18n="env.step1.install_step7">点击 "Install" 开始安装，等待完成</li>
+                    </ol>
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <p data-i18n-html="env.step1.path_warning"><strong>环境变量提示：</strong>如果没有勾选添加到PATH，需要手动添加以下路径到系统环境变量：<br>
+                            <code>C:\Users\你的用户名\miniconda3</code><br>
+                            <code>C:\Users\你的用户名\miniconda3\Scripts</code><br>
+                            <code>C:\Users\你的用户名\miniconda3\Library\bin</code></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title" data-i18n="env.step1.step3_title">验证Conda安装</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n-html="env.step1.step3_desc">打开<strong>新的</strong>命令提示符或PowerShell窗口，运行：</p>
+                    <div class="code-block">
+                        <code>conda --version</code>
+                    </div>
+                    <p data-i18n="env.step1.step3_result">如果显示conda版本号，说明安装成功。</p>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3><i class="fas fa-cogs"></i> <span data-i18n="env.step2.title">第二步：创建并配置Conda环境</span></h3>
+                
+                <div class="info-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <p data-i18n-html="env.step2.info">我们提供了预配置好的环境文件，您可以选择<strong>方式一（推荐）：使用environment.yml一键创建</strong>，或<strong>方式二：逐步手动安装</strong>。两种方式的效果完全一致。</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; background: var(--gradient-1); border-radius: 50px; color: white; font-weight: 700; font-size: 0.9rem; flex-shrink: 0;">
+                            <i class="fas fa-star"></i> <span data-i18n="env.step2.method1_badge">方式一（推荐）</span>
+                        </span>
+                        <div class="step-title" data-i18n="env.step2.method1_title">使用environment.yml一键创建环境</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n-html="env.step2.method1_desc">下载我们提供的 <code>environment.yml</code> 文件后，打开命令行并切换到文件所在目录，运行：</p>
+                    <div class="code-block">
+                        <code>conda env create -f environment.yml</code>
+                    </div>
+                    <p style="margin-top: 1rem;" data-i18n-html="env.step2.method1_note">这会自动创建一个名为 <code>hil</code> 的环境，并安装所有必需的依赖包（包括PyTorch 2.4.0 + CUDA 12.4）。您也可以使用 <code>-n 自定义名称</code> 来指定个性化的环境名：</p>
+                    <div class="code-block">
+                        <code>conda env create -f environment.yml -n my_hil_env</code>
+                    </div>
+                    <p style="margin-top: 0.5rem;" data-i18n="env.step2.method1_activate">安装完成后激活环境：</p>
+                    <div class="code-block">
+                        <code>conda activate hil</code>
+                    </div>
+                    <div class="warning-box" style="margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <p data-i18n-html="env.step2.method1_warning"><strong>注意：</strong>执行上述命令时，请确保当前终端的工作目录与文件所在位置一致（使用 <code>cd</code> 命令切换），否则请使用绝对路径：<br><code>conda env create -f C:\Users\你的用户名\Downloads\environment.yml</code></p>
+                        </div>
+                    </div>
+                    <div class="download-links" style="margin-top: 1rem;">
+                        <a href="../source_information/environment.yml" download class="download-link">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4 data-i18n="env.step2.dl_env_yml">点击下载 environment.yml</h4>   
+                                <p data-i18n="env.step2.dl_env_yml_desc">Conda环境配置文件（含所有依赖）</p>
+                            </div>
+                        </a>
+                        <a href="../source_information/requirements.txt" download class="download-link">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4 data-i18n="env.step2.dl_req_txt">点击下载 requirements.txt</h4>
+                                <p data-i18n="env.step2.dl_req_txt_desc">Python pip依赖清单</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="info-box" style="margin-top: 1rem;">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <p data-i18n-html="env.step2.method1_custom_name"><strong>个性化环境名：</strong>默认创建的环境名为 <code>hil</code>，如需自定义名称，可使用 <code>conda env create -f environment.yml -n 你的环境名</code>。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; background: rgba(102, 126, 234, 0.15); border: 1px solid var(--primary-color); border-radius: 50px; color: var(--primary-color); font-weight: 600; font-size: 0.9rem; flex-shrink: 0;">
+                            <i class="fas fa-list-ol"></i> <span data-i18n="env.step2.method2_badge">方式二</span>
+                        </span>
+                        <div class="step-title" data-i18n="env.step2.method2_title">逐步手动创建环境</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n-html="env.step2.method2_step1"><strong>步骤1：</strong>创建新的Conda环境（Python 3.8）。您可以将 <code>hil</code> 替换为您喜欢的任意名称：</p>
+                    <div class="code-block">
+                        <code>conda create -n hil python=3.8 -y</code>
+                    </div>
+                    <p style="margin-top: 1rem; margin-bottom: 1rem;" data-i18n-html="env.step2.method2_step2"><strong>步骤2：</strong>激活环境：</p>
+                    <div class="code-block">
+                        <code>conda activate hil</code>
+                    </div>
+                    <p style="margin-top: 1rem; margin-bottom: 1rem;" data-i18n-html="env.step2.method2_step3"><strong>步骤3：</strong>安装PyTorch（GPU版本，自带CUDA 12.4）：</p>
+                    <div class="code-block">
+                        <code>conda install pytorch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 pytorch-cuda=12.4 -c pytorch -c nvidia -y</code>
+                    </div>
+                    <p style="margin-top: 1rem; margin-bottom: 1rem;" data-i18n-html="env.step2.method2_step4"><strong>步骤4：</strong>安装其他依赖包（使用requirements.txt）：</p>
+                    <div class="code-block">
+                        <code>pip install -r requirements.txt</code>
+                    </div>
+                    <div class="warning-box" style="margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <p data-i18n-html="env.step2.method2_warning"><strong>注意：</strong>执行上述命令时，请确保当前终端的工作目录与 <code>requirements.txt</code> 文件所在位置一致，否则请使用绝对路径：<br><code>pip install -r C:\Users\你的用户名\Downloads\requirements.txt</code></p>
+                        </div>
+                    </div>
+                    <div class="download-links" style="margin-top: 1rem;">
+                        <a href="../source_information/requirements.txt" download class="download-link">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4 data-i18n="env.step2.method2_dl_title">下载 requirements.txt</h4>
+                                <p data-i18n="env.step2.method2_dl_desc">Python pip依赖清单</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3><i class="fas fa-check-circle"></i> <span data-i18n="env.step3.title">第三步：验证GPU支持</span></h3>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title" data-i18n="env.step3.step1_title">确认PyTorch能识别GPU</div>
+                    </div>
+                    <p style="margin-bottom: 1rem;" data-i18n="env.step3.step1_desc">在已激活的conda环境中运行以下Python代码：</p>
+                    <div class="code-block">
+                        <code>python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'CUDA version: {torch.version.cuda}'); print(f'Device count: {torch.cuda.device_count()}'); print(f'Device name: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"</code>
+                    </div>
+                    <p style="margin-top: 1rem;" data-i18n="env.step3.step1_expected">预期输出示例：</p>
+                    <div class="code-block">
+                        <code>CUDA available: True
+CUDA version: 12.4
+Device count: 1
+Device name: NVIDIA GeForce RTX 4060</code>
+                    </div>
+                    <p style="margin-top: 1rem;" data-i18n-html="env.step3.step1_result">如果输出显示 <code>CUDA available: True</code>，说明PyTorch已正确识别GPU，环境配置完成！</p>
+                </div>
+
+                <div class="success-box">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <p data-i18n-html="env.step3.complete"><strong>环境配置完成！</strong>您已成功配置好HIL平台所需的Python开发环境。现在可以返回<a href="tutorial.html" style="color: var(--primary-color);">使用教程</a>开始使用平台了。如有疑问，请查看<a href="faq.html" style="color: var(--primary-color);">常见问题</a>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>HIL Platform</span>
+                    </div>
+                    <p data-i18n-html="footer.about.desc">Human In the Loop 医学影像标注平台<br>智能化标注解决方案</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 data-i18n="footer.links.title">快速链接</h4>
+                    <ul>
+                        <li><a href="workflow.html" data-i18n="footer.links.wf">工作流程</a></li>
+                        <li><a href="environment.html" data-i18n="footer.links.env">环境配置</a></li>
+                        <li><a href="tutorial.html" data-i18n="footer.links.tut">使用教程</a></li>
+                        <li><a href="download.html" data-i18n="footer.links.dl">软件下载</a></li>
+                        <li><a href="technical.html" data-i18n="footer.links.tech">技术文档</a></li>
+                        <li><a href="faq.html" data-i18n="footer.links.faq">常见问题</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 data-i18n="footer.project.title">关于项目</h4>
+                    <p data-i18n="footer.project.desc">基于Qt6.9.1与3DUnetCNN开发的医学影像智能标注平台</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2024 HIL Platform. Human In the Loop 医学影像标注平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Force download for .yml and .txt files (file:// protocol doesn't support download attribute for text files)
+            document.querySelectorAll('a.download-link').forEach(function(link) {
+                var href = link.getAttribute('href');
+                if (href && (href.endsWith('.yml') || href.endsWith('.txt'))) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', href, true);
+                        xhr.responseType = 'blob';
+                        xhr.onload = function() {
+                            if (xhr.status === 200 || xhr.status === 0) {
+                                var blob = xhr.response;
+                                var url = URL.createObjectURL(blob);
+                                var a = document.createElement('a');
+                                a.href = url;
+                                a.download = href.split('/').pop();
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                            }
+                        };
+                        xhr.send();
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="../i18n.js"></script>
+</body>
+</html>

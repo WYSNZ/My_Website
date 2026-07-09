@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIL - Human In the Loop 医学影像标注平台</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .quick-links {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, var(--dark-bg) 0%, rgba(30, 41, 59, 0.5) 100%);
+        }
+        
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .quick-link-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quick-link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .quick-link-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .quick-link-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .quick-link-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-link-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .quick-link-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-link-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-link-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-link-feature {
+            padding: 4px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+        }
+        
+        .quick-link-arrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .quick-link-arrow i {
+            transition: transform 0.3s ease;
+        }
+        
+        .quick-link-card:hover .quick-link-arrow i {
+            transform: translateX(5px);
+        }
+        
+        .env-highlight {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .env-highlight .quick-link-icon {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="pages/workflow.html" class="nav-link" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="pages/environment.html" class="nav-link" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="pages/tutorial.html" class="nav-link" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="pages/download.html" class="nav-link" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="pages/technical.html" class="nav-link" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="pages/faq.html" class="nav-link" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-rocket"></i>
+                <span data-i18n="hero.badge">模型学习驱动的智能标注</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text" data-i18n="hero.title1">Human In the Loop</span>
+                <br><span data-i18n="hero.title2">医学影像标注平台</span>
+            </h1>
+            <p class="hero-subtitle" data-i18n-html="hero.subtitle">
+                基于Qt6.9.1与3DUnetCNN的智能化医学影像标注解决方案<br>
+                人机协作，高效精准，显著降低标注成本
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label" data-i18n="hero.time_reduction">时间减少</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">12x</div>
+                    <div class="stat-label" data-i18n="hero.efficiency">效率提升</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%+</div>
+                    <div class="stat-label" data-i18n="hero.accuracy">标注准确率</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <i class="fas fa-user-md"></i>
+                <span data-i18n="float.manual">人工标注</span>
+            </div>
+            <div class="floating-card card-2">
+                <i class="fas fa-robot"></i>
+                <span data-i18n="float.learning">模型学习</span>
+            </div>
+            <div class="floating-card card-3">
+                <i class="fas fa-sync-alt"></i>
+                <span data-i18n="float.iteration">迭代优化</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="quick-links">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge" data-i18n="quick.badge">Quick Links</span>
+                <h2 class="section-title" data-i18n="quick.title">快速导航</h2>
+                <p class="section-subtitle" data-i18n="quick.subtitle">深入了解HIL平台的各项功能和使用方法</p>
+            </div>
+            
+            <div class="quick-links-grid">
+                <a href="pages/workflow.html" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3 data-i18n="quick.workflow.title">工作流程</h3>
+                    <p data-i18n="quick.workflow.desc">了解HIL平台的创新工作流程，从人工标注到模型预测的完整循环</p>
+                    <div class="quick-link-features">
+                        <span class="quick-link-feature" data-i18n="quick.workflow.tag1">人工标注</span>
+                        <span class="quick-link-feature" data-i18n="quick.workflow.tag2">模型学习</span>
+                        <span class="quick-link-feature" data-i18n="quick.workflow.tag3">迭代优化</span>
+                    </div>
+                    <div class="quick-link-arrow">
+                        <span data-i18n="quick.workflow.link">详细流程</span> <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <a href="pages/environment.html" class="quick-link-card env-highlight">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 data-i18n="quick.env.title">环境配置</h3>
+                    <p data-i18n="quick.env.desc">详细的Miniconda+CUDA+PyTorch环境配置教程，支持Windows系统</p>
+                    <div class="quick-link-features">
+                        <span class="quick-link-feature" data-i18n="quick.env.tag1">驱动检查</span>
+                        <span class="quick-link-feature" data-i18n="quick.env.tag2">创建环境</span>
+                        <span class="quick-link-feature" data-i18n="quick.env.tag3">conda配置</span>
+                    </div>
+                    <div class="quick-link-arrow">
+                        <span data-i18n="quick.env.link">配置环境</span> <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <a href="pages/tutorial.html" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 data-i18n="quick.tutorial.title">使用教程</h3>
+                    <p data-i18n="quick.tutorial.desc">详细的图文教程，手把手教您使用HIL平台进行医学影像标注</p>
+                    <div class="quick-link-features">
+                        <span class="quick-link-feature" data-i18n="quick.tutorial.tag1">环境配置</span>
+                        <span class="quick-link-feature" data-i18n="quick.tutorial.tag2">项目准备</span>
+                        <span class="quick-link-feature" data-i18n="quick.tutorial.tag3">模型训练</span>
+                    </div>
+                    <div class="quick-link-arrow">
+                        <span data-i18n="quick.tutorial.link">开始学习</span> <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge" data-i18n="features.badge">Core Features</span>
+                <h2 class="section-title" data-i18n="features.title">核心功能</h2>
+                <p class="section-subtitle" data-i18n="features.subtitle">集成化医学影像标注解决方案，赋能自动化图像分割标注模型训练</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 data-i18n="features.f1.title">集成化环境配置</h3>
+                    <p data-i18n="features.f1.desc">内置Python环境，同时推荐通过Miniconda自行管理依赖，灵活适配开发需求</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f1.l1">虚拟conda环境管理</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f1.l2">驱动检查</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f1.l3">创建环境</span></li>
+                    </ul>
+                </div>
+
+                <div class="feature-card featured">
+                    <div class="feature-badge" data-i18n="features.f2.badge">核心</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 data-i18n="features.f2.title">3D UNet模型训练</h3>
+                    <p data-i18n="features.f2.desc">基于3DUnetCNN架构，针对医学影像优化的深度学习模型</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f2.l1">3D卷积神经网络</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f2.l2">自动模型优化</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f2.l3">增量学习支持</span></li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 data-i18n="features.f3.title">自动化预测标注</h3>
+                    <p data-i18n="features.f3.desc">预测完成后可自动转换为可加载的分割格式并可随时监测进度，大幅减少人工工作量</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f3.l1">批量预测处理</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f3.l2">结果自动转换</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f3.l3">实时监测进度</span></li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 data-i18n="features.f4.title">可视化标注工具</h3>
+                    <p data-i18n="features.f4.desc">直观的标注界面，支持手动修正和精细化调整</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f4.l1">实时预览</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f4.l2">多视图支持</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f4.l3">快捷操作</span></li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3 data-i18n="features.f5.title">项目管理</h3>
+                    <p data-i18n="features.f5.desc">灵活的项目结构管理，支持多病例、多类别影像组织</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f5.l1">多项目管理</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f5.l2">数据集版本控制</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f5.l3">配置文件管理</span></li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 data-i18n="features.f6.title">训练监控</h3>
+                    <p data-i18n="features.f6.desc">实时监控训练进度，Dice系数和性能指标实时更新</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f6.l1">实时日志输出</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f6.l2">性能指标追踪</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="features.f6.l3">训练状态提醒</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="tech-stack">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge" data-i18n="tech.badge">Technology</span>
+                <h2 class="section-title" data-i18n="tech.title">技术栈</h2>
+                <p class="section-subtitle" data-i18n="tech.subtitle">基于先进技术构建的可靠平台</p>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-window-maximize"></i>
+                    </div>
+                    <h3>Qt 6.9.1</h3>
+                    <p data-i18n="tech.qt.desc">跨平台C++图形用户界面应用程序开发框架</p>
+                    <div class="tech-features">
+                        <span data-i18n="tech.qt.t1">高性能</span>
+                        <span data-i18n="tech.qt.t2">跨平台</span>
+                        <span data-i18n="tech.qt.t3">现代化UI</span>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>3DUnetCNN</h3>
+                    <p data-i18n="tech.unet.desc">专为医学影像分割设计的3D卷积神经网络架构</p>
+                    <div class="tech-features">
+                        <span data-i18n="tech.unet.t1">3D分割</span>
+                        <span data-i18n="tech.unet.t2">深度学习</span>
+                        <span data-i18n="tech.unet.t3">高精度</span>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Python</h3>
+                    <p data-i18n="tech.python.desc">强大的深度学习生态系统和丰富的医学影像处理库</p>
+                    <div class="tech-features">
+                        <span data-i18n="tech.python.t1">易扩展</span>
+                        <span data-i18n="tech.python.t2">生态丰富</span>
+                        <span data-i18n="tech.python.t3">社区活跃</span>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>CUDA 12+</h3>
+                    <p data-i18n="tech.cuda.desc">NVIDIA并行计算平台，加速深度学习训练过程</p>
+                    <div class="tech-features">
+                        <span data-i18n="tech.cuda.t1">GPU加速</span>
+                        <span data-i18n="tech.cuda.t2">并行计算</span>
+                        <span data-i18n="tech.cuda.t3">高性能</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-diagram">
+                <h3 data-i18n="tech.arch.title"><i class="fas fa-project-diagram"></i> 系统架构</h3>
+                <div class="diagram-flow">
+                    <div class="diagram-node">
+                        <i class="fas fa-desktop"></i>
+                        <span data-i18n="tech.arch.node1">Qt GUI</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-cogs"></i>
+                        <span data-i18n="tech.arch.node2">Python Backend</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-brain"></i>
+                        <span data-i18n="tech.arch.node3">3D UNet Model</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-microchip"></i>
+                        <span data-i18n="tech.arch.node4">CUDA/GPU</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>HIL Platform</span>
+                    </div>
+                    <p data-i18n-html="footer.about.desc">Human In the Loop<br><br>医学影像标注平台<br><br>智能化标注解决方案</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 data-i18n="footer.links.title">快速链接</h4>
+                    <ul>
+                        <li><a href="pages/workflow.html" data-i18n="footer.links.wf">工作流程</a></li>
+                        <li><a href="pages/environment.html" data-i18n="footer.links.env">环境配置</a></li>
+                        <li><a href="pages/tutorial.html" data-i18n="footer.links.tut">使用教程</a></li>
+                        <li><a href="pages/download.html" data-i18n="footer.links.dl">软件下载</a></li>
+                        <li><a href="pages/technical.html" data-i18n="footer.links.tech">技术文档</a></li>
+                        <li><a href="pages/faq.html" data-i18n="footer.links.faq">常见问题</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 data-i18n="footer.project.title">关于项目</h4>
+                    <p data-i18n="footer.project.desc">基于Qt6.9.1与3DUnetCNN开发的医学影像智能标注平台</p>
+                    <div class="footer-badges">
+                        <span class="badge badge-primary">Qt 6.9.1</span>
+                        <span class="badge badge-secondary">3DUnetCNN</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2026 HIL Platform. Human In the Loop 医学影像标注平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="i18n.js"></script>
+</body>
+</html>

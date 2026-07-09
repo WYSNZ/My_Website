@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="dl.pageTitle">软件下载 - HIL Platform</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .download-page {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .download-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            margin-bottom: 40px;
+        }
+        
+        .download-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .download-intro {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .download-intro h3 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+        
+        .download-intro h3 i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .download-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .download-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .download-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .download-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .os-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            background: linear-gradient(135deg, rgba(0, 188, 242, 0.15) 0%, rgba(0, 120, 212, 0.15) 100%);
+            color: #00bcf2;
+        }
+
+        .download-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .download-card .version {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem 2.5rem;
+            background: var(--gradient-1);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .download-card.windows .download-btn {
+            background: linear-gradient(135deg, #00bcf2 0%, #0078d4 100%);
+            box-shadow: 0 4px 15px rgba(0, 120, 212, 0.3);
+        }
+        
+        .download-card.windows .download-btn:hover {
+            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.5);
+        }
+        
+        .env-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .env-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .env-link i {
+            transition: transform 0.3s ease;
+        }
+        
+        .env-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .warning-box i {
+            color: var(--warning-color);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .warning-box p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .download-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="workflow.html" class="nav-link" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="environment.html" class="nav-link" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="tutorial.html" class="nav-link" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="download.html" class="nav-link active" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="technical.html" class="nav-link" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="faq.html" class="nav-link" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="download-page">
+        <div class="download-header">
+            <span class="section-badge" data-i18n="nav.download">Download</span>
+            <h1 class="section-title" data-i18n="page.download.title">软件下载中心</h1>
+            <p class="section-subtitle" data-i18n="page.download.subtitle">选择适合您的版本，开始使用HIL医学影像标注平台</p>
+        </div>
+
+        <div class="download-container">
+            <div class="download-intro">
+                <h3><i class="fas fa-info-circle"></i> <span data-i18n="dl.intro.heading">下载说明</span></h3>
+                <p data-i18n-html="dl.intro.text">HIL平台提供两种获取方式：<strong>直接安装版</strong>（一键安装，开箱即用）和<strong>Release版本</strong>（源码压缩包，适合自行编译部署）。<strong>软件已内置Python环境</strong>，可直接运行使用。但推荐做法是自行在电脑上安装好对应的Conda环境和依赖，以获得更好的兼容性和性能。下载完成后，请参考<a href="environment.html" style="color: var(--primary-color);">环境配置指南</a>完成环境搭建。</p>
+            </div>
+
+            <div class="download-cards">
+                <div class="download-card windows">
+                    <div class="os-icon">
+                        <i class="fab fa-windows"></i>
+                    </div>
+                    <h3 data-i18n="dl.card.installer.title">直接安装版（分卷压缩）</h3>
+                    <p class="version" data-i18n="dl.card.installer.version">适用于 Windows 10/11 (64-bit) — 共5个分卷，解压后得到安装程序</p>
+
+                    <a href="javascript:void(0)" class="download-btn" onclick="downloadHilSetup()" id="dl-installer-btn">
+                        <i class="fas fa-download"></i>
+                        <span data-i18n="dl.card.installer.download">下载全部分卷</span>
+                    </a>
+                    
+                    <a href="environment.html" class="env-link">
+                        <span data-i18n="dl.card.installer.envGuide">查看环境配置教程</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="download-card windows">
+                    <div class="os-icon">
+                        <i class="fas fa-file-archive"></i>
+                    </div>
+                    <h3 data-i18n="dl.card.release.title">Release 版本</h3>
+                    <p class="version" data-i18n="dl.card.release.version">适用于 Windows 10/11 (64-bit) — 源码压缩包，灵活部署</p>
+
+                    <a href="../source_windows/release.zip" class="download-btn" download="HIL_release.zip">
+                        <i class="fas fa-download"></i>
+                        <span data-i18n="dl.card.release.download">下载 Release 压缩包</span>
+                    </a>
+                    
+                    <a href="environment.html" class="env-link">
+                        <span data-i18n="dl.card.release.envGuide">查看环境配置教程</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <p data-i18n-html="dl.warning.text"><strong>安全提示：</strong>下载的 .exe 文件可能会触发浏览器的安全警告，这是正常现象。请点击"保留"或"继续下载"完成下载。下载完成后，建议使用杀毒软件扫描文件后再运行安装程序。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var _dlBusy = false;
+        function downloadHilSetup() {
+            if (_dlBusy) return;
+            _dlBusy = true;
+            var files = [
+                'HILsetup.zip',
+                'HILsetup.z01',
+                'HILsetup.z02',
+                'HILsetup.z03',
+                'HILsetup.z04'
+            ];
+            var base = '../source_windows/';
+            var btn = document.getElementById('dl-installer-btn');
+            var btnSpan = btn.querySelector('span');
+            var origText = btnSpan.textContent;
+
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.6';
+            btnSpan.textContent = I18N.translate('dl.card.installer.downloading');
+
+            var i = 0;
+            function next() {
+                if (i >= files.length) {
+                    btnSpan.textContent = I18N.translate('dl.card.installer.done');
+                    setTimeout(function() {
+                        btnSpan.textContent = origText;
+                        btn.style.pointerEvents = '';
+                        btn.style.opacity = '';
+                        _dlBusy = false;
+                    }, 2000);
+                    return;
+                }
+                var a = document.createElement('a');
+                a.href = base + files[i];
+                a.download = files[i];
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                i++;
+                setTimeout(next, 800);
+            }
+            next();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="../i18n.js"></script>
+</body>
+</html>

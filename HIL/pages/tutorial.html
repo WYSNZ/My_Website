@@ -1,0 +1,808 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用教程 - HIL Platform</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tutorial-page {
+            padding-top: 100px;
+            min-height: 100vh;
+            background: var(--dark-bg);
+        }
+        
+        .tutorial-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tutorial-layout {
+            display: flex;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+            gap: 30px;
+        }
+        
+        .tutorial-sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        
+        .sidebar-nav {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        
+        .sidebar-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sidebar-title i {
+            color: var(--primary-color);
+        }
+        
+        .sidebar-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-step {
+            padding: 10px 14px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .sidebar-step:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-step.active {
+            background: var(--gradient-1);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .step-num {
+            width: 22px;
+            height: 22px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-step.active .step-num {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .tutorial-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .tutorial-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tutorial-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        
+        .section-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .section-card h3 i {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+        }
+        
+        .step-content {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            font-size: 0.95rem;
+        }
+        
+        .step-content p {
+            margin-bottom: 16px;
+        }
+        
+        .step-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .image-container {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-container:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 500px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+        
+        .image-caption {
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .image-caption i {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+        }
+        
+        .info-box {
+            display: flex;
+            gap: 14px;
+            padding: 18px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .info-box i {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .info-box p {
+            margin: 0;
+            line-height: 1.7;
+        }
+        
+        .warning-box {
+            display: flex;
+            gap: 14px;
+            padding: 18px 20px;
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .warning-box i {
+            font-size: 1.3rem;
+            color: #fbbf24;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .warning-box p {
+            margin: 0;
+            line-height: 1.7;
+        }
+        
+        .folder-structure {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .folder-structure h4 {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        .folder-structure code {
+            display: block;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #93c5fd;
+            line-height: 2;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal */
+        .img-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .img-modal.active {
+            display: flex;
+        }
+        
+        .img-modal img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+        
+        .img-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .tutorial-layout {
+                flex-direction: column;
+                padding: 20px 16px 40px;
+            }
+            
+            .tutorial-sidebar {
+                width: 100%;
+                position: static;
+            }
+            
+            .sidebar-steps {
+                flex-direction: row;
+                flex-wrap: wrap;
+                max-height: none;
+            }
+            
+            .sidebar-step {
+                flex: 1;
+                min-width: 100px;
+                justify-content: center;
+                font-size: 0.8rem;
+            }
+            
+            .section-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="workflow.html" class="nav-link" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="environment.html" class="nav-link" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="tutorial.html" class="nav-link active" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="download.html" class="nav-link" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="technical.html" class="nav-link" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="faq.html" class="nav-link" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tutorial-page">
+        <div class="tutorial-header">
+            <span class="section-badge" data-i18n="nav.tutorial">Tutorial</span>
+            <h1 class="section-title" data-i18n="page.tutorial.title">软件使用教程</h1>
+            <p class="section-subtitle" data-i18n="page.tutorial.subtitle">从新建项目到迭代优化的完整操作指南</p>
+        </div>
+
+        <div class="tutorial-layout">
+            <!-- 左侧导航 -->
+            <div class="tutorial-sidebar">
+                <div class="sidebar-nav">
+                    <div class="sidebar-title"><i class="fas fa-list"></i> <span data-i18n="tut.sidebar.title">教程目录</span></div>
+                    <div class="sidebar-steps">
+                        <button class="sidebar-step active" data-step="1"><span class="step-num">1</span> <span data-i18n="tut.sidebar.step1">项目与数据集</span></button>
+                        <button class="sidebar-step" data-step="2"><span class="step-num">2</span> <span data-i18n="tut.sidebar.step2">打开软件</span></button>
+                        <button class="sidebar-step" data-step="3"><span class="step-num">3</span> <span data-i18n="tut.sidebar.step3">环境选择</span></button>
+                        <button class="sidebar-step" data-step="4"><span class="step-num">4</span> <span data-i18n="tut.sidebar.step4">项目命名</span></button>
+                        <button class="sidebar-step" data-step="5"><span class="step-num">5</span> <span data-i18n="tut.sidebar.step5">配置参数</span></button>
+                        <button class="sidebar-step" data-step="6"><span class="step-num">6</span> <span data-i18n="tut.sidebar.step6">确认配置</span></button>
+                        <button class="sidebar-step" data-step="7"><span class="step-num">7</span> <span data-i18n="tut.sidebar.step7">进入项目</span></button>
+                        <button class="sidebar-step" data-step="8"><span class="step-num">8</span> <span data-i18n="tut.sidebar.step8">项目界面</span></button>
+                        <button class="sidebar-step" data-step="9"><span class="step-num">9</span> <span data-i18n="tut.sidebar.step9">数据集管理</span></button>
+                        <button class="sidebar-step" data-step="10"><span class="step-num">10</span> <span data-i18n="tut.sidebar.step10">选择数据</span></button>
+                        <button class="sidebar-step" data-step="11"><span class="step-num">11</span> <span data-i18n="tut.sidebar.step11">开始训练</span></button>
+                        <button class="sidebar-step" data-step="12"><span class="step-num">12</span> <span data-i18n="tut.sidebar.step12">开始预测</span></button>
+                        <button class="sidebar-step" data-step="13"><span class="step-num">13</span> <span data-i18n="tut.sidebar.step13">预测参数</span></button>
+                        <button class="sidebar-step" data-step="14"><span class="step-num">14</span> <span data-i18n="tut.sidebar.step14">查看并修正</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧内容 -->
+            <div class="tutorial-content">
+                <!-- 步骤1 -->
+                <div class="tutorial-section active" data-section="1">
+                    <div class="section-card">
+                        <h3><i class="fas fa-folder-plus"></i> <span data-i18n="tut.step1.heading">步骤1：新建项目文件夹和数据集目录</span></h3>
+                        <div class="step-content">
+                            <p data-i18n="tut.step1.p1">在开始使用HIL平台之前，需要先创建好项目所需的两个目录结构：</p>
+                            <p data-i18n-html="tut.step1.p2"><strong>1. 项目文件夹：</strong>用于存放当前项目的配置信息、缓存和训练出的模型。建议在桌面创建，如 <code>Traning_Dir</code>。</p>
+                            <p data-i18n-html="tut.step1.p3"><strong>2. 数据集目录：</strong>用于存放在本次项目中需要训练和预测的所有病例数据集。推荐目录结构如下：</p>
+                            <div class="folder-structure">
+                                <h4><i class="fas fa-folder-tree"></i> <span data-i18n="tut.step1.folder_title">推荐目录结构</span></h4>
+                                <code data-i18n-html="tut.step1.folder_code">
+                                    My_training/                    ← 数据集根目录<br>
+                                    &emsp;├── patient_001/           ← 病例子文件夹<br>
+                                    &emsp;│&emsp;&emsp;├── 40.nii.gz<br>
+                                    &emsp;│&emsp;&emsp;├── 70.nii.gz<br>
+                                    &emsp;│&emsp;&emsp;├── vnc.nii.gz<br>
+                                    &emsp;│&emsp;&emsp;└── breSeg.nii.gz   ← 已标注的分割文件（训练集需要）<br>
+                                    &emsp;├── patient_002/<br>
+                                    &emsp;│&emsp;&emsp;├── ...<br>
+                                    &emsp;└── ...
+                                </code>
+                            </div>
+                            <div class="info-box">
+                                <i class="fas fa-info-circle"></i>
+                                <p data-i18n-html="tut.step1.info">如果某个病例是作为<strong>训练集</strong>使用，需将已手工标注好的分割文件（如 <code>breSeg.nii.gz</code>）一同放入该病例文件夹中。作为预测集的病例则无需此文件。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤2 -->
+                <div class="tutorial-section" data-section="2">
+                    <div class="section-card">
+                        <h3><i class="fas fa-desktop"></i> <span data-i18n="tut.step2.heading">步骤2：打开软件 — 主界面</span></h3>
+                        <div class="step-content">
+                            <p data-i18n="tut.step2.p1">打开HIL平台后，进入主界面：</p>
+                            <ul style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step2.li1"><strong>左上角"新建"</strong>—— 创建新的训练项目</li>
+                                <li data-i18n-html="tut.step2.li2"><strong>语言切换</strong>—— 支持中文和英文界面切换</li>
+                                <li data-i18n-html="tut.step2.li3"><strong>右侧项目管理区</strong>—— 显示所有已建立的项目，双击即可进入</li>
+                            </ul>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="1" src="" alt="软件主界面">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step2.caption">图：HIL平台主界面</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤3 -->
+                <div class="tutorial-section" data-section="3">
+                    <div class="section-card">
+                        <h3><i class="fas fa-cog"></i> <span data-i18n="tut.step3.heading">步骤3：新建项目 — 环境选择</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step3.p1">点击"新建"后弹出<strong>环境选择</strong>窗口：</p>
+                            <ul style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step3.li1"><strong>首次使用</strong>需要手动选择已配置好的Conda环境</li>
+                                <li data-i18n-html="tut.step3.li2"><strong>后续新建项目</strong>时软件会自动定位上次选择的目录，可直接点击确定</li>
+                                <li data-i18n-html="tut.step3.li3"><strong>Python环境</strong>—— 选择Miniconda中已配置的 <code>hil</code> 虚拟环境中的 <code>python.exe</code>（路径：<code>Miniconda安装目录/envs/hil/python.exe</code>）</li>
+                                <li data-i18n-html="tut.step3.li4"><strong>ITK环境</strong>—— 可选，不影响训练和预测，但需要它才能在软件内实时预览分割结果。可自行下载ITK后选择</li>
+                            </ul>
+                            <div class="info-box">
+                                <i class="fas fa-check-circle"></i>
+                                <p data-i18n-html="tut.step3.info">选好Python环境后软件会自动检测环境是否正确。待下方环境检测框弹出<strong>"环境检测通过"</strong>的信息后，即可点击确定进入下一步。</p>
+                            </div>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="2" src="" alt="环境选择窗口">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step3.caption">图：环境选择弹窗</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤4 -->
+                <div class="tutorial-section" data-section="4">
+                    <div class="section-card">
+                        <h3><i class="fas fa-pen"></i> <span data-i18n="tut.step4.heading">步骤4：项目命名</span></h3>
+                        <div class="step-content">
+                            <p data-i18n="tut.step4.p1">环境选择通过后，进入项目创建界面：</p>
+                            <ul style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step4.li1">输入<strong>项目名称</strong>（建议使用英文+数字的组合）</li>
+                                <li data-i18n-html="tut.step4.li2">选择<strong>新建配置文件</strong></li>
+                                <li data-i18n-html="tut.step4.li3">点击<strong>新建</strong>按钮</li>
+                            </ul>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="3" src="" alt="项目命名界面">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step4.caption">图：输入项目名称并新建</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤5 -->
+                <div class="tutorial-section" data-section="5">
+                    <div class="section-card">
+                        <h3><i class="fas fa-sliders-h"></i> <span data-i18n="tut.step5.heading">步骤5：配置参数</span></h3>
+                        <div class="step-content">
+                            <p data-i18n="tut.step5.p1">进入配置文件生成界面，需手动填入以下信息：</p>
+                            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+                                <thead>
+                                    <tr><th style="text-align:left; padding:8px 12px; background:rgba(102,126,234,0.1); border-bottom:2px solid var(--primary-color);" data-i18n="tut.step5.th1">配置项</th><th style="text-align:left; padding:8px 12px; background:rgba(102,126,234,0.1); border-bottom:2px solid var(--primary-color);" data-i18n="tut.step5.th2">说明</th></tr>
+                                </thead>
+                                <tbody style="color: var(--text-secondary);">
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td1a">数据集路径</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td1b">选择第一步中创建的数据集根目录（包含所有病例文件夹的总文件夹）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td2a">CT图像名称</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n-html="tut.step5.td2b">训练用的背景图像名称（如双能CT的 <code>40,70,vnc</code>，用<strong>英文逗号</strong>分隔；单通道填一个即可）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td3a">独立输入通道</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td3b">当不同病例文件包含的图像不齐全时，可启用独立通道输入（如有的只有40+70，有的只有40+vnc）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td4a">分割图像名称</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n-html="tut.step5.td4b">需要分割的目标文件名称（如乳房分割 <code>breSeg</code>）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td5a">分割标签</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n-html="tut.step5.td5b">前景0 + 使用到的label值（如 <code>0,1</code>）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td6a">输入通道数</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td6b">CT图像名称的数量（如40,70,vnc为3个通道）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td7a">输出通道数</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step5.td7b">分割标签数（通常为2，代表背景+前景）</td></tr>
+                                    <tr><td style="padding:8px 12px;" data-i18n="tut.step5.td8a">项目文件夹</td><td style="padding:8px 12px;" data-i18n="tut.step5.td8b">选择第一步中创建的项目文件夹（Traning_Dir）</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p data-i18n-html="tut.step5.warn"><strong>高级配置：</strong>除非对模型训练有深入了解，否则<strong>不要更改</strong>高级配置中的参数！</p>
+                            </div>
+                            <p data-i18n-html="tut.step5.p2">填好所有信息后，点击 <strong>OK</strong> 按钮。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="4" src="" alt="配置文件生成界面">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step5.caption">图：配置文件参数填写</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤6 -->
+                <div class="tutorial-section" data-section="6">
+                    <div class="section-card">
+                        <h3><i class="fas fa-check-double"></i> <span data-i18n="tut.step6.heading">步骤6：确认配置</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step6.p1">配置文件生成完毕后，可以看到项目名称和配置文件都已经准备就绪。确认无误后点击<strong>确定</strong>。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="5" src="" alt="配置文件完成">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step6.caption">图：配置确认界面</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤7 -->
+                <div class="tutorial-section" data-section="7">
+                    <div class="section-card">
+                        <h3><i class="fas fa-door-open"></i> <span data-i18n="tut.step7.heading">步骤7：进入项目</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step7.p1">回到主界面后，可以看到刚才创建的项目已经显示在项目管理区域。<strong>双击</strong>项目即可进入。至此，新建项目环节完成。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="6" src="" alt="项目创建完成">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step7.caption">图：主界面 - 项目已生成，双击进入</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤8 -->
+                <div class="tutorial-section" data-section="8">
+                    <div class="section-card">
+                        <h3><i class="fas fa-th-large"></i> <span data-i18n="tut.step8.heading">步骤8：项目操作界面</span></h3>
+                        <div class="step-content">
+                            <p data-i18n="tut.step8.p1">进入项目后，界面布局如下：</p>
+                            <ul style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step8.li1"><strong>左侧竖栏</strong>—— 项目病例陈列列表</li>
+                                <li data-i18n-html="tut.step8.li2"><strong>右侧终端</strong>—— 实时输出训练和预测信息</li>
+                            </ul>
+                            <p data-i18n="tut.step8.p2">顶部工具栏功能说明：</p>
+                            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+                                <thead>
+                                    <tr><th style="text-align:left; padding:8px 12px; background:rgba(102,126,234,0.1); border-bottom:2px solid var(--primary-color);" data-i18n="tut.step8.th1">按钮</th><th style="text-align:left; padding:8px 12px; background:rgba(102,126,234,0.1); border-bottom:2px solid var(--primary-color);" data-i18n="tut.step8.th2">功能</th></tr>
+                                </thead>
+                                <tbody style="color: var(--text-secondary);">
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step8.td1a">配置</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step8.td1b">修改项目配置（环境选择、训练轮数等训练参数）</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step8.td2a">转换</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step8.td2b">格式转换，将DCM格式文件转换为nii.gz格式</td></tr>
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step8.td3a">返回</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step8.td3b">返回主界面，可切换不同项目</td></tr>
+                                    <tr><td style="padding:8px 12px;" data-i18n="tut.step8.td4a">终端</td><td style="padding:8px 12px;" data-i18n="tut.step8.td4b">清空终端内容，方便查看新消息</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="7" src="" alt="项目操作界面">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step8.caption">图：项目内部界面</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤9 -->
+                <div class="tutorial-section" data-section="9">
+                    <div class="section-card">
+                        <h3><i class="fas fa-database"></i> <span data-i18n="tut.step9.heading"></span>步骤9：数据集管理</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step9.p1">点击左侧竖栏上方的<strong>"数据集管理"</strong>，可动态向项目中添加或移除病例文件夹：</p>
+                            <ul style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step9.li1">勾选需要<strong>加入</strong>的数据集</li>
+                                <li data-i18n-html="tut.step9.li2">取消勾选需要<strong>移除</strong>的数据集</li>
+                                <li data-i18n="tut.step9.li3">完成后点击确定即可</li>
+                            </ul>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="8" src="" alt="数据集管理界面">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step9.caption">图：数据集管理弹窗 — 勾选/取消勾选数据集</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤10 -->
+                <div class="tutorial-section" data-section="10">
+                    <div class="section-card">
+                        <h3><i class="fas fa-check-square"></i> <span data-i18n="tut.step10.heading">步骤10：选择训练集和预测集</span></h3>
+                        <div class="step-content">
+                            <p data-i18n="tut.step10.p1">在左侧病例列表中，对每个数据集进行标记：</p>
+                            <ul style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step10.li1">在<strong>训练集</strong>列<strong>打勾</strong>—— 将该病例加入模型训练</li>
+                                <li data-i18n-html="tut.step10.li2">在<strong>预测集</strong>列<strong>打勾</strong>—— 将该病例用于模型预测标注</li>
+                            </ul>
+                            <p data-i18n-html="tut.step10.p2" style="color: var(--text-secondary);">支持<strong>鼠标拖动批量勾选</strong>，然后右键进行<strong>批量操作</strong>，提高效率。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="10" src="" alt="选择训练集和预测集">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step10.caption">图：勾选训练集和预测集</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤11 -->
+                <div class="tutorial-section" data-section="11">
+                    <div class="section-card">
+                        <h3><i class="fas fa-play-circle"></i> <span data-i18n="tut.step11.heading">步骤11：开始训练</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step11.p1">勾选好训练集后，点击右下角的<strong>"开始训练"</strong>按钮，弹出参数选择框：</p>
+                            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+                                <thead>
+                                    <tr><th style="text-align:left; padding:8px 12px; background:rgba(102,126,234,0.1); border-bottom:2px solid var(--primary-color);" data-i18n="tut.step11.th1">参数</th><th style="text-align:left; padding:8px 12px; background:rgba(102,126,234,0.1); border-bottom:2px solid var(--primary-color);" data-i18n="tut.step11.th2">说明</th></tr>
+                                </thead>
+                                <tbody style="color: var(--text-secondary);">
+                                    <tr><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n="tut.step11.td1a">核心数</td><td style="padding:8px 12px; border-bottom:1px solid var(--border-color);" data-i18n-html="tut.step11.td1b">个人电脑固定为 <strong>1</strong>，不需要修改</td></tr>
+                                    <tr><td style="padding:8px 12px;" data-i18n="tut.step11.td2a">线程数</td><td style="padding:8px 12px;" data-i18n-html="tut.step11.td2b">视数据集规模和电脑配置决定：<br>• 数据集少 / CPU性能强 / 内存大 → 可多开线程加速<br>• 内存 ≤ 16GB / 性能一般 → <strong>建议设为2</strong></td></tr>
+                                </tbody>
+                            </table>
+                            <p data-i18n-html="tut.step11.p2">设置完毕后点击<strong>确定</strong>，等待训练完成即可。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="11" src="" alt="开始训练">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step11.caption">图：训练参数设置与训练过程</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤12 -->
+                <div class="tutorial-section" data-section="12">
+                    <div class="section-card">
+                        <h3><i class="fas fa-forward"></i> <span data-i18n="tut.step12.heading">步骤12：开始预测</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step12.p1">训练结束后即得到一个训练好的模型。现在使用该模型对预测集进行标注预测，点击<strong>"开始预测"</strong>按钮。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="12" src="" alt="开始预测">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step12.caption">图：训练完成，点击开始预测</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤13 -->
+                <div class="tutorial-section" data-section="13">
+                    <div class="section-card">
+                        <h3><i class="fas fa-microchip"></i> <span data-i18n="tut.step13.heading">步骤13：预测参数设置</span></h3>
+                        <div class="step-content">
+                            <p data-i18n-html="tut.step13.p1">预测时的核心数和线程数设置与训练时同理，根据电脑配置选择后点击<strong>确定</strong>，等待预测结束。</p>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="13" src="" alt="预测参数设置">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step13.caption">图：预测参数配置</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤14 -->
+                <div class="tutorial-section" data-section="14">
+                    <div class="section-card">
+                        <h3><i class="fas fa-edit"></i> <span data-i18n="tut.step14.heading">步骤14：查看并修正标注结果</span></h3>
+                        <div class="step-content">
+                            <div class="info-box">
+                                <i class="fas fa-info-circle"></i>
+                                <p data-i18n-html="tut.step14.info">软件提示"预测完成"后<strong>还需再等待一会</strong>，直到终端上显示<strong>"转换已完成"</strong>。这是将预测文件转换为可直接加载预览的文件格式。</p>
+                            </div>
+                            <p data-i18n-html="tut.step14.note">转换完成后，可直接<strong>双击</strong>左侧竖栏里的数据集打开目录结构查看。</p>
+                            <p data-i18n="tut.step14.p1">在目录结构中：</p>
+                            <ol style="margin-left: 1.5rem; line-height: 2.2; margin-bottom: 1rem;">
+                                <li data-i18n-html="tut.step14.li1"><strong>双击背景文件</strong>（如40.nii.gz）打开</li>
+                                <li data-i18n-html="tut.step14.li2">勾选<strong>"同时打开"</strong>，则预测的分割文件会一同加载显示</li>
+                            </ol>
+                            <p data-i18n-html="tut.step14.p2">此时即可在软件内<strong>手动查看和修正</strong>模型预测的标注结果。修正完成后<strong>保存分割结果</strong>，该病例即可加入训练集，作为模型下一次学习的训练数据。</p>
+                            <div class="success-box">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <p data-i18n-html="tut.step14.success"><strong>迭代优化已启动！</strong>后续流程即为：将修正后的标注加入训练集 → 重新训练模型 → 再次预测 → 继续修正 → 循环往复，直到模型标注结果达到满意的准确度。</p>
+                                </div>
+                            </div>
+                            <div class="image-container" onclick="openModal(this.querySelector('img').src)">
+                                <img data-tut-step="14" src="" alt="查看与修正结果">
+                                <div class="image-caption"><i class="fas fa-search-plus"></i> <span data-i18n="tut.step14.caption">图：双向打开背景与分割文件，手动查看修正</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片模态框 -->
+    <div class="img-modal" id="imgModal" onclick="closeModal()">
+        <span class="img-modal-close">&times;</span>
+        <img id="modalImg" src="" alt="放大查看">
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>HIL Platform</span>
+                    </div>
+                    <p data-i18n-html="footer.about.desc">Human In the Loop<br><br>医学影像标注平台<br><br>智能化标注解决方案</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.links.title">快速链接</h4>
+                    <ul>
+                        <li><a href="workflow.html" data-i18n="footer.links.wf">工作流程</a></li>
+                        <li><a href="environment.html" data-i18n="footer.links.env">环境配置</a></li>
+                        <li><a href="tutorial.html" data-i18n="footer.links.tut">使用教程</a></li>
+                        <li><a href="download.html" data-i18n="footer.links.dl">软件下载</a></li>
+                        <li><a href="technical.html" data-i18n="footer.links.tech">技术文档</a></li>
+                        <li><a href="faq.html" data-i18n="footer.links.faq">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.project.title">关于项目</h4>
+                    <p data-i18n="footer.project.desc">基于Qt6.9.1与3DUnetCNN开发的医学影像智能标注平台</p>
+                    <div class="footer-badges">
+                        <span class="badge badge-primary">Qt 6.9.1</span>
+                        <span class="badge badge-secondary">3DUnetCNN</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2026 HIL Platform. Human In the Loop 医学影像标注平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 汉堡菜单
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // 左侧导航切换
+            const sidebarSteps = document.querySelectorAll('.sidebar-step');
+            const sections = document.querySelectorAll('.tutorial-section');
+            
+            sidebarSteps.forEach(step => {
+                step.addEventListener('click', function() {
+                    const stepNum = this.dataset.step;
+                    
+                    sidebarSteps.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    sections.forEach(s => s.classList.remove('active'));
+                    const target = document.querySelector(`[data-section="${stepNum}"]`);
+                    if (target) target.classList.add('active');
+                });
+            });
+        });
+
+        // 图片模态框
+        function openModal(src) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('imgModal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('imgModal').classList.remove('active');
+        }
+    </script>
+    <script src="../i18n.js"></script>
+    <script>
+        function updateTutorialImages() {
+            const lang = I18N.current === 'en' ? 'en' : 'cn';
+            document.querySelectorAll('[data-tut-step]').forEach(img => {
+                const step = img.getAttribute('data-tut-step');
+                const padded = step.padStart(2, '0');
+                img.src = `../images/tutorial_${lang}_${padded}.png`;
+            });
+        }
+        // Override switchTo to also update tutorial images
+        const origSwitch = I18N.switchTo.bind(I18N);
+        I18N.switchTo = function(lang) {
+            origSwitch(lang);
+            updateTutorialImages();
+        };
+        // Initial load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateTutorialImages);
+        } else {
+            updateTutorialImages();
+        }
+    </script>
+</body>
+</html>

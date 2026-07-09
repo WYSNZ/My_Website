@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="wf.page_title">工作流程 - HIL Platform</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .workflow-page {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .workflow-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            margin-bottom: 40px;
+        }
+        
+        .workflow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .workflow-intro {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .workflow-intro h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+        
+        .workflow-intro h3 i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .workflow-diagram {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .diagram-title {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .diagram-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .diagram-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 1.5rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+        
+        .diagram-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .diagram-node i {
+            font-size: 2rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .diagram-node span {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .diagram-arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+            font-weight: 900;
+        }
+        
+        .cycle-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 2px dashed var(--primary-color);
+            border-radius: 50px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .cycle-indicator i {
+            animation: rotate 3s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .step-detail {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-detail:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-icon-large {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .step-icon-large i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .step-title-area h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-title-area p {
+            color: var(--text-secondary);
+        }
+        
+        .step-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .step-description {
+            line-height: 1.8;
+        }
+        
+        .step-description h4 {
+            color: var(--primary-color);
+            margin: 1rem 0 0.5rem;
+        }
+        
+        .step-description ul {
+            margin-left: 1.5rem;
+            line-height: 2;
+        }
+        
+        .step-visual {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .step-visual img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        
+        .step-visual i {
+            font-size: 5rem;
+            opacity: 0.3;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .benefits-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .benefits-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .benefit-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+        
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .benefit-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .benefit-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .benefit-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .step-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .diagram-flow {
+                flex-direction: column;
+            }
+            
+            .diagram-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="workflow.html" class="nav-link active" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="environment.html" class="nav-link" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="tutorial.html" class="nav-link" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="download.html" class="nav-link" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="technical.html" class="nav-link" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="faq.html" class="nav-link" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="workflow-page">
+        <div class="workflow-header">
+            <span class="section-badge" data-i18n="nav.workflow">Workflow</span>
+            <h1 class="section-title" data-i18n="page.workflow.title">创新工作流程</h1>
+            <p class="section-subtitle" data-i18n="page.workflow.subtitle">人机协作的迭代式标注流程，持续优化模型性能</p>
+        </div>
+
+        <div class="workflow-container">
+            <a href="../index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span data-i18n="wf.back_home">返回首页</span>
+            </a>
+
+            <div class="workflow-intro">
+                <h3><i class="fas fa-lightbulb"></i> <span data-i18n="wf.core_concept">核心理念</span></h3>
+                <p data-i18n-html="wf.core_concept_desc" style="line-height: 1.8; color: var(--text-secondary);">
+                    HIL平台采用<strong style="color: var(--primary-color);">Human In the Loop（人在回路）</strong>的标注模式，将人工智能与人类专家的智慧相结合。通过<strong style="color: var(--primary-color);">"人工标注 → 模型学习 → 智能预测 → 人工修正 → 迭代优化"</strong>的循环流程，实现医学影像的高效、精准标注。这种模式既保证了标注质量，又大幅降低了人力成本和时间成本。
+                </p>
+            </div>
+
+            <div class="tech-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
+                <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                    <i class="fas fa-project-diagram" style="color: var(--primary-color); font-size: 1.5rem;"></i>
+                    <span data-i18n="wf.workflow_diagram">完整工作流程图</span>
+                </h3>
+                <img src="../images/HIL-work_flow.png" alt="HIL平台工作流程图" style="max-width: 100%; border-radius: 12px;">
+            </div>
+
+            <div class="workflow-diagram">
+                <h3 class="diagram-title"><i class="fas fa-project-diagram"></i> <span data-i18n="wf.workflow_diagram">完整工作流程图</span></h3>
+                <div class="diagram-flow">
+                    <div class="diagram-node">
+                        <i class="fas fa-user-edit"></i>
+                        <span data-i18n="wf.step_manual">人工标注</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span data-i18n="wf.step_learning">模型学习</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-magic"></i>
+                        <span data-i18n="wf.step_predict">智能预测</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-tools"></i>
+                        <span data-i18n="wf.step_correct">人工修正</span>
+                    </div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-node">
+                        <i class="fas fa-sync-alt"></i>
+                        <span data-i18n="wf.step_iterate">迭代优化</span>
+                    </div>
+                </div>
+                <div class="cycle-indicator">
+                    <i class="fas fa-redo"></i>
+                    <span data-i18n="wf.cycle_indicator">循环迭代直至完成所有标注</span>
+                </div>
+            </div>
+
+            <div class="step-detail">
+                <div class="step-header">
+                    <div class="step-icon-large">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div class="step-title-area">
+                        <h3 data-i18n="wf.step1_title">第一步：人工标注</h3>
+                        <p data-i18n="wf.step1_subtitle">专家对少量医学影像进行精确标注，创建初始训练集</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-description">
+                        <p data-i18n="wf.step1_desc1">在标注流程的起始阶段，医学影像专家需要对少量的CT或MRI图像进行精确标注。这些标注数据将作为模型的初始训练集，其质量直接影响后续模型的学习效果。</p>
+                        
+                        <h4 data-i18n="wf.step1_h4_key_points">关键要点：</h4>
+                        <ul>
+                            <li data-i18n="wf.step1_li_kp1">选择具有代表性的典型病例进行标注</li>
+                            <li data-i18n="wf.step1_li_kp2">确保标注的准确性和一致性</li>
+                            <li data-i18n="wf.step1_li_kp3">标注数量建议占总数据量的5-10%</li>
+                            <li data-i18n="wf.step1_li_kp4">涵盖不同病变类型和严重程度</li>
+                        </ul>
+                        
+                        <h4 data-i18n="wf.step1_h4_tools">标注工具：</h4>
+                        <ul>
+                            <li data-i18n="wf.step1_li_tool1">使用的是ITK-SNAP标注工具</li>
+                            <li data-i18n="wf.step1_li_tool2">支持多种标注模式（点、线、区域）</li>
+                            <li data-i18n="wf.step1_li_tool3">实时预览和编辑功能</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-detail">
+                <div class="step-header">
+                    <div class="step-icon-large">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="step-title-area">
+                        <h3 data-i18n="wf.step2_title">第二步：模型学习</h3>
+                        <p data-i18n="wf.step2_subtitle">3D UNet模型基于标注数据进行训练，学习影像特征</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-description">
+                        <p data-i18n="wf.step2_desc1">基于初始标注数据，平台使用3D UNet深度学习模型进行训练。3D UNet是专为医学影像分割设计的网络架构，能够有效提取三维空间特征。</p>
+                        
+                        <h4 data-i18n="wf.step2_h4_process">训练过程：</h4>
+                        <ul>
+                            <li data-i18n="wf.step2_li_pr1">自动数据增强和预处理</li>
+                            <li data-i18n="wf.step2_li_pr2">GPU加速训练过程</li>
+                            <li data-i18n="wf.step2_li_pr3">实时监控训练进度和Dice系数更新</li>
+                            <li data-i18n="wf.step2_li_pr4">自动保存最优模型检查点</li>
+                        </ul>
+                        
+                        <h4 data-i18n="wf.step2_h4_advantages">技术优势：</h4>
+                        <ul>
+                            <li data-i18n="wf.step2_li_adv1">3D卷积捕捉空间连续性</li>
+                            <li data-i18n="wf.step2_li_adv2">U型结构保留细节特征</li>
+                            <li data-i18n="wf.step2_li_adv3">跳跃连接融合多尺度信息</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-detail">
+                <div class="step-header">
+                    <div class="step-icon-large">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <div class="step-title-area">
+                        <h3 data-i18n="wf.step3_title">第三步：智能预测</h3>
+                        <p data-i18n="wf.step3_subtitle">训练完成的模型对未标注影像进行预测，扩展标注范围</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-description">
+                        <p data-i18n="wf.step3_desc1">模型训练完成后，可以批量预测未标注的医学影像。模型会自动识别影像中的特定区域并进行标注，大幅减少标注时间。</p>
+                        
+                        <h4 data-i18n="wf.step3_h4_features">预测功能：</h4>
+                        <ul>
+                            <li data-i18n="wf.step3_li_ft1">批量处理多个病例数据</li>
+                            <li data-i18n="wf.step3_li_ft2">自动生成标注结果</li>
+                            <li data-i18n="wf.step3_li_ft3">Dice系数评估和可视化</li>
+                            <li data-i18n="wf.step3_li_ft4">支持多种输出格式</li>
+                        </ul>
+                        
+                        <h4 data-i18n="wf.step3_h4_efficiency">效率提升：</h4>
+                        <ul>
+                            <li data-i18n="wf.step3_li_ef1">单次预测可处理数百张及以上图像</li>
+                            <li data-i18n="wf.step3_li_ef2">预测速度比人工快10-20倍</li>
+                            <li data-i18n="wf.step3_li_ef3">自动处理重复性工作</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-detail">
+                <div class="step-header">
+                    <div class="step-icon-large">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="step-title-area">
+                        <h3 data-i18n="wf.step4_title">第四步：人工修正</h3>
+                        <p data-i18n="wf.step4_subtitle">专家审核预测结果，修正错误标注，提升数据质量</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-description">
+                        <p data-i18n="wf.step4_desc1">模型预测的结果需要经过专家审核。专家可以快速浏览预测标注，对模型预测错误的部分进行修正，确保最终数据的质量。</p>
+                        
+                        <h4 data-i18n="wf.step4_h4_process">修正流程：</h4>
+                        <ul>
+                            <li data-i18n="wf.step4_li_pr1">可视化查看预测结果</li>
+                            <li data-i18n="wf.step4_li_pr2">快速定位需要修正的区域</li>
+                            <li data-i18n="wf.step4_li_pr3">便捷的编辑和调整工具</li>
+                            <li data-i18n="wf.step4_li_pr4">标注质量评分系统</li>
+                        </ul>
+                        
+                        <h4 data-i18n="wf.step4_h4_qa">质量保证：</h4>
+                        <ul>
+                            <li data-i18n="wf.step4_li_qa1">专家把关确保准确性</li>
+                            <li data-i18n="wf.step4_li_qa2">修正工作量远小于从头标注</li>
+                            <li data-i18n="wf.step4_li_qa3">持续提升模型性能</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-check-double"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-detail">
+                <div class="step-header">
+                    <div class="step-icon-large">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="step-title-area">
+                        <h3 data-i18n="wf.step5_title">第五步：迭代优化</h3>
+                        <p data-i18n="wf.step5_subtitle">将修正后的数据加入训练集，进行二次学习与标注</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-description">
+                        <p data-i18n="wf.step5_desc1">将修正后的高质量标注数据加入训练集，重新训练模型。随着迭代次数增加，模型性能不断提升，预测准确率越来越高。</p>
+                        
+                        <h4 data-i18n="wf.step5_h4_advantages">迭代优势：</h4>
+                        <ul>
+                            <li data-i18n="wf.step5_li_adv1">数据量持续增长</li>
+                            <li data-i18n="wf.step5_li_adv2">模型性能逐步提升</li>
+                            <li data-i18n="wf.step5_li_adv3">人工工作量逐渐减少</li>
+                            <li data-i18n="wf.step5_li_adv4">最终达到高准确率</li>
+                        </ul>
+                        
+                        <h4 data-i18n="wf.step5_h4_convergence">收敛特性：</h4>
+                        <ul>
+                            <li data-i18n="wf.step5_li_cv1">通常3-5轮迭代循环即可达到满意效果</li>
+                            <li data-i18n="wf.step5_li_cv2">后期修正工作量降至最低</li>
+                            <li data-i18n="wf.step5_li_cv3">模型泛化能力不断增强</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="benefits-section">
+                <h3><i class="fas fa-star"></i> <span data-i18n="wf.benefits_title">工作流程优势</span></h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4 data-i18n="wf.benefit1_title">节省时间</h4>
+                        <p data-i18n="wf.benefit1_desc">训练好的模型可直接预测大量图像，大幅减少原定标注时间</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 data-i18n="wf.benefit2_title">减少人力</h4>
+                        <p data-i18n="wf.benefit2_desc">专家只需关注关键修正工作，人力成本降低70-80%</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h4 data-i18n="wf.benefit3_title">提高精度</h4>
+                        <p data-i18n="wf.benefit3_desc">人机协作模式确保标注质量，准确率达到95%以上</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h4 data-i18n="wf.benefit4_title">持续优化</h4>
+                        <p data-i18n="wf.benefit4_desc">迭代式学习使模型性能不断提升，越用越智能</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>HIL Platform</span>
+                    </div>
+                    <p data-i18n-html="footer.about.desc">Human In the Loop 医学影像标注平台<br>智能化标注解决方案</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 data-i18n="footer.links.title">快速链接</h4>
+                    <ul>
+                        <li><a href="workflow.html" data-i18n="footer.links.wf">工作流程</a></li>
+                        <li><a href="environment.html" data-i18n="footer.links.env">环境配置</a></li>
+                        <li><a href="tutorial.html" data-i18n="footer.links.tut">使用教程</a></li>
+                        <li><a href="download.html" data-i18n="footer.links.dl">软件下载</a></li>
+                        <li><a href="technical.html" data-i18n="footer.links.tech">技术文档</a></li>
+                        <li><a href="faq.html" data-i18n="footer.links.faq">常见问题</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 data-i18n="footer.project.title">关于项目</h4>
+                    <p data-i18n="footer.project.desc">基于Qt6.9.1与3DUnetCNN开发的医学影像智能标注平台</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2024 HIL Platform. Human In the Loop 医学影像标注平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="../i18n.js"></script>
+</body>
+</html>

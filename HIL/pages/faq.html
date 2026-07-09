@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page.faq.page_title">常见问题 - HIL Platform</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .faq-page {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .faq-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            margin-bottom: 40px;
+        }
+        
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .faq-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .faq-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .faq-card h4 .faq-icon {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .faq-card p, .faq-card li {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        .faq-card ul {
+            margin-left: 1.5rem;
+            line-height: 2;
+        }
+        
+        .faq-card code {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .faq-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="workflow.html" class="nav-link" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="environment.html" class="nav-link" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="tutorial.html" class="nav-link" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="download.html" class="nav-link" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="technical.html" class="nav-link" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="faq.html" class="nav-link active" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="faq-page">
+        <div class="faq-header">
+            <span class="section-badge" data-i18n="nav.faq">FAQ</span>
+            <h1 class="section-title" data-i18n="page.faq.title">常见问题</h1>
+            <p class="section-subtitle" data-i18n="page.faq.subtitle">环境配置与使用过程中的常见疑问解答</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-card">
+                <h4><span class="faq-icon">Q:</span> <span data-i18n="faq.q.conda_not_found">conda命令找不到怎么办？</span></h4>
+                <p data-i18n-html="faq.a.conda_not_found"><strong>A:</strong> 需要将conda添加到系统环境变量中，或者使用Anaconda Prompt/PowerShell。如果安装时没有勾选"Add to PATH"，请手动添加以下路径到系统环境变量：<br>
+                <code>C:\Users\你的用户名\miniconda3</code><br>
+                <code>C:\Users\你的用户名\miniconda3\Scripts</code><br>
+                <code>C:\Users\你的用户名\miniconda3\Library\bin</code></p>
+            </div>
+
+            <div class="faq-card">
+                <h4><span class="faq-icon">Q:</span> <span data-i18n="faq.q.pytorch_gpu">PyTorch无法识别GPU（CUDA available: False）？</span></h4>
+                <p data-i18n="faq.a.pytorch_gpu_intro"><strong>A:</strong> 请逐项检查：</p>
+                <ul>
+                    <li data-i18n-html="faq.a.pytorch_gpu.1">运行 <code>nvidia-smi</code> 确认显卡驱动已正确安装且CUDA版本 ≥ 12.4</li>
+                    <li data-i18n="faq.a.pytorch_gpu.2">确认安装的是GPU版本的PyTorch（而非cpu版本）</li>
+                    <li data-i18n="faq.a.pytorch_gpu.3">如果CUDA版本不满足要求，请更新NVIDIA显卡驱动</li>
+                    <li data-i18n="faq.a.pytorch_gpu.4">确认没有同时安装多个PyTorch版本导致冲突</li>
+                </ul>
+            </div>
+
+            <div class="faq-card">
+                <h4><span class="faq-icon">Q:</span> <span data-i18n="faq.q.env_create_fail">使用environment.yml创建环境失败？</span></h4>
+                <p data-i18n="faq.a.env_create_fail_intro"><strong>A:</strong> 可能的原因及解决方法：</p>
+                <ul>
+                    <li data-i18n="faq.a.env_create_fail.1">网络问题导致下载失败 → 尝试更换网络或使用代理</li>
+                    <li data-i18n-html="faq.a.env_create_fail.2">conda版本过旧 → 运行 <code>conda update conda</code> 更新</li>
+                    <li data-i18n="faq.a.env_create_fail.3">磁盘空间不足 → 确保至少有10GB可用空间</li>
+                    <li data-i18n="faq.a.env_create_fail.4">可以尝试使用方式二逐步手动安装</li>
+                </ul>
+            </div>
+
+            <div class="faq-card">
+                <h4><span class="faq-icon">Q:</span> <span data-i18n="faq.q.runtime_gpu_not_found">软件运行时提示找不到GPU？</span></h4>
+                <p data-i18n="faq.a.runtime_gpu_not_found_intro"><strong>A:</strong> 请确认以下事项：</p>
+                <ul>
+                    <li data-i18n-html="faq.a.runtime_gpu_not_found.1">确认已安装NVIDIA显卡驱动，运行 <code>nvidia-smi</code> 检查</li>
+                    <li data-i18n-html="faq.a.runtime_gpu_not_found.2">确认Conda环境已正确激活（<code>conda activate hil</code>）</li>
+                    <li data-i18n-html="faq.a.runtime_gpu_not_found.3">确认PyTorch为GPU版本，运行 <code>python -c "import torch; print(torch.cuda.is_available())"</code> 验证</li>
+                    <li data-i18n="faq.a.runtime_gpu_not_found.4">如果使用内置Python环境，请检查是否缺少CUDA运行库</li>
+                </ul>
+            </div>
+
+            <div class="faq-card">
+                <h4><span class="faq-icon">Q:</span> <span data-i18n="faq.q.label_save_export">标注结果如何保存和导出？</span></h4>
+                <p data-i18n-html="faq.a.label_save_export"><strong>A:</strong> HIL平台支持将标注结果保存为NIfTI格式（.nii.gz），与原始医学影像格式完全兼容。所有标注数据存储在项目的 <code>labels</code> 目录下，可通过平台内置的文件管理器直接查看和管理。</p>
+            </div>
+
+            <div class="faq-card">
+                <h4><span class="faq-icon">Q:</span> <span data-i18n="faq.q.training_time">模型训练需要多长时间？</span></h4>
+                <p data-i18n="faq.a.training_time"><strong>A:</strong> 训练时间取决于数据集大小、GPU性能和训练参数配置。使用NVIDIA RTX 3060 + 100个标注数据集，典型训练时间约为2-4小时。随着数据集增大和模型迭代，单次预测结果的修正时间会显著缩短。</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>HIL Platform</span>
+                    </div>
+                    <p data-i18n-html="footer.about.desc">Human In the Loop<br><br>医学影像标注平台<br><br>智能化标注解决方案</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.links.title">快速链接</h4>
+                    <ul>
+                        <li><a href="workflow.html" data-i18n="footer.links.wf">工作流程</a></li>
+                        <li><a href="environment.html" data-i18n="footer.links.env">环境配置</a></li>
+                        <li><a href="tutorial.html" data-i18n="footer.links.tut">使用教程</a></li>
+                        <li><a href="download.html" data-i18n="footer.links.dl">软件下载</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.project.title">关于项目</h4>
+                    <p data-i18n="footer.project.desc">基于Qt6.9.1与3DUnetCNN开发的医学影像智能标注平台</p>
+                    <div class="footer-badges">
+                        <span class="badge badge-primary">Qt 6.9.1</span>
+                        <span class="badge badge-secondary">3DUnetCNN</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2026 HIL Platform. Human In the Loop 医学影像标注平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="../i18n.js"></script>
+</body>
+</html>

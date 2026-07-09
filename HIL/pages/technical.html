@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="td.page.title">技术文档 - HIL Platform</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tech-page {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .tech-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            margin-bottom: 40px;
+        }
+        
+        .tech-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .tech-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tech-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tech-section h3 i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .dataset-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .dataset-badge.de {
+            background: rgba(102, 126, 234, 0.15);
+            color: var(--primary-color);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .dataset-badge.sd {
+            background: rgba(118, 75, 162, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(118, 75, 162, 0.3);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .data-table thead th {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--text);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .data-table tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        
+        .data-table tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .highlight-row {
+            background: rgba(102, 126, 234, 0.08) !important;
+        }
+
+        .fig-placeholder {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .fig-placeholder:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .fig-placeholder i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+        
+        .fig-placeholder p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .fig-image {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .fig-image img {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .fig-image .fig-caption {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+        }
+
+        .info-box {
+            background: rgba(102, 126, 234, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .info-box p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .tech-section {
+                padding: 1.5rem;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table thead th,
+            .data-table tbody td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>HIL Platform</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+                <li><a href="workflow.html" class="nav-link" data-i18n="nav.workflow">工作流程</a></li>
+                <li><a href="environment.html" class="nav-link" data-i18n="nav.environment">环境配置</a></li>
+                <li><a href="tutorial.html" class="nav-link" data-i18n="nav.tutorial">使用教程</a></li>
+                <li><a href="download.html" class="nav-link" data-i18n="nav.download">软件下载</a></li>
+                <li><a href="technical.html" class="nav-link active" data-i18n="nav.technical">技术文档</a></li>
+                <li><a href="faq.html" class="nav-link" data-i18n="nav.faq">常见问题</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tech-page">
+        <div class="tech-header">
+            <span class="section-badge" data-i18n="nav.technical">Technical Docs</span>
+            <h1 class="section-title" data-i18n="page.technical.title">技术文档</h1>
+            <p class="section-subtitle" data-i18n="page.technical.subtitle">HIL平台模型性能测试与标注效率评估数据</p>
+        </div>
+
+        <div class="tech-container">
+            <!-- 手工标注时间 -->
+            <div class="tech-section">
+                <h3><i class="fas fa-clock"></i> <span data-i18n="td.annotation.time.title">手工标注时间统计</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;" data-i18n="td.annotation.time.desc">
+                    以下数据展示了在不同规模的训练数据集下，模型预测结果的人工修正时间。随着训练数据量增加，模型预测精度持续提升，人工修正时间显著缩短。
+                </p>
+
+                <!-- DE 数据集 -->
+                <span class="dataset-badge de" data-i18n="td.dataset.de">DE 数据集 — 双能CT (Dual Energy)</span>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="td.table.de.header.col1">手动修改的CT类别 (DE)</th>
+                                <th data-i18n="td.table.header.col2">修改的CT图数量</th>
+                                <th data-i18n="td.table.header.col3">花费时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-i18n="td.table.de.r1c1">手工从头标注</td>
+                                <td data-i18n="td.table.de.r1c2">1张</td>
+                                <td data-i18n="td.table.de.r1c3">1小时2分钟</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.de.r2c1">在5个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.de.r2c2">5张</td>
+                                <td data-i18n="td.table.de.r2c3">50分钟（约10分钟/张）</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.de.r3c1">在10个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.de.r3c2">10张</td>
+                                <td data-i18n="td.table.de.r3c3">1小时6分钟（约6-7分钟/张）</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.de.r4c1">在20个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.de.r4c2">30张</td>
+                                <td data-i18n="td.table.de.r4c3">1小时32分钟（约3分钟/张）</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.de.r5c1">在50个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.de.r5c2">50张</td>
+                                <td data-i18n="td.table.de.r5c3">53分钟（约1分钟/张）</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td data-i18n-html="td.table.de.r6c1"><strong>在100个数据集模型预测结果上修改</strong></td>
+                                <td data-i18n="td.table.de.r6c2">80张</td>
+                                <td data-i18n-html="td.table.de.r6c3"><strong>20分钟（仅挨个查看）</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin: 2rem 0;"></div>
+
+                <!-- SD 数据集 -->
+                <span class="dataset-badge sd" data-i18n="td.dataset.sd">SD 数据集 — 传统CT (Standard)</span>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="td.table.sd.header.col1">手动修改的CT类别 (SD)</th>
+                                <th data-i18n="td.table.header.col2">修改的CT图数量</th>
+                                <th data-i18n="td.table.header.col3">花费时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-i18n="td.table.sd.r1c1">手工从头标注</td>
+                                <td data-i18n="td.table.sd.r1c2">1张</td>
+                                <td data-i18n="td.table.sd.r1c3">40分钟</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.sd.r2c1">在5个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.sd.r2c2">5张</td>
+                                <td data-i18n="td.table.sd.r2c3">1小时（约12分钟/张）</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.sd.r3c1">在10个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.sd.r3c2">10张</td>
+                                <td data-i18n="td.table.sd.r3c3">1小时40分钟（约10分钟/张）</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.sd.r4c1">在20个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.sd.r4c2">30张</td>
+                                <td data-i18n="td.table.sd.r4c3">2小时30分钟（约5分钟/张）</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="td.table.sd.r5c1">在50个数据集模型预测结果上修改</td>
+                                <td data-i18n="td.table.sd.r5c2">50张</td>
+                                <td data-i18n="td.table.sd.r5c3">2小时30分钟（约3分钟/张）</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td data-i18n-html="td.table.sd.r6c1"><strong>在100个数据集模型预测结果上修改</strong></td>
+                                <td data-i18n="td.table.sd.r6c2">80张</td>
+                                <td data-i18n-html="td.table.sd.r6c3"><strong>40分钟（约0.5分钟/张）</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box" style="margin-top: 1.5rem;">
+                    <i class="fas fa-lightbulb"></i>
+                    <p data-i18n-html="td.conclusion.annotation.time">
+                        <strong>核心结论：</strong>随着模型训练数据量从5个增至100个，单张CT的修正时间大幅下降：DE数据集从手工标注1小时/张降至<strong>仅需查看确认</strong>；SD数据集从40分钟/张降至<strong>约30秒/张</strong>。充分体现了HIL平台"人机协同"迭代优化的核心价值。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 模型性能可视化 -->
+            <div class="tech-section">
+                <h3><i class="fas fa-chart-bar"></i> <span data-i18n="td.model.performance.title">模型性能评估</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;" data-i18n="td.model.performance.desc">
+                    以下图表展示了HIL平台在不同数据集规模下的模型性能指标和效率对比。
+                </p>
+
+                <!-- HIL-Results 实验结果 -->
+                <h4 style="color: var(--text); margin-bottom: 1rem; font-size: 1.1rem;">
+                    <i class="fas fa-image" style="color: var(--primary-color); margin-right: 8px;"></i>
+                    <span data-i18n="td.model.fig1.title">图1：不同规模数据集模型分割结果对比</span>
+                </h4>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;" data-i18n="td.model.fig1.desc">相同训练轮次下，使用不同规模（5/10/20/50/100）数据集训练的3D UNet模型对同一幅医学影像的分割结果，以及与专家标注（Ground Truth）的差异对比。</p>
+                <div class="fig-image">
+                    <img src="../images/HIL-Results.png" alt="不同规模数据集分割结果对比" style="width: 100%; max-width: 100%;">
+                    <p class="fig-caption" data-i18n="td.model.fig1.caption">图1：随训练数据量增加，模型分割结果逐渐逼近专家标注水平</p>
+                </div>
+
+                <div style="margin: 2.5rem 0; border-top: 1px solid var(--border-color);"></div>
+
+                <!-- Efficient+Other 效率对比 -->
+                <h4 style="color: var(--text); margin-bottom: 1rem; font-size: 1.1rem;">
+                    <i class="fas fa-chart-bar" style="color: var(--primary-color); margin-right: 8px;"></i>
+                    <span data-i18n="td.model.fig2.title">图2：工作效率与精确度分析</span>
+                </h4>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;" data-i18n="td.model.fig2.desc">HIL方法与传统纯人工标注方法的标注效率与分割精确度（Dice系数）的对比分析。</p>
+                <div class="fig-image">
+                    <img src="../images/Efficient+Other_old.png" alt="工作效率与精确度对比" style="width: 100%; max-width: 100%;">
+                    <p class="fig-caption" data-i18n="td.model.fig2.caption">图2：标注效率（张/小时）与Dice系数的柱状图+折线图综合对比</p>
+                </div>
+
+                <div style="margin: 2.5rem 0; border-top: 1px solid var(--border-color);"></div>
+
+                <!-- Vital value 标注参数 -->
+                <h4 style="color: var(--text); margin-bottom: 1rem; font-size: 1.1rem;">
+                    <i class="fas fa-clipboard-check" style="color: var(--primary-color); margin-right: 8px;"></i>
+                    <span data-i18n="td.model.fig3.title">图3：模型标注质量评估参数</span>
+                </h4>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;" data-i18n="td.model.fig3.desc">对训练模型的分割标注结果进行的多项评价指标分析，包括HD95（Hausdorff距离95分位数）、Dice系数、PLD（模型分割与专家标注相差的像素个数）、ASD（平均表面距离）等。</p>  
+                <div class="fig-image">
+                    <img src="../images/Vital value.png" alt="模型标注质量参数评估" style="width: 100%; max-width: 100%;">
+                    <p class="fig-caption" data-i18n="td.model.fig3.caption">图3：模型标注质量的多维度量化评估（HD95 / Dice / PLD / ASD）</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>HIL Platform</span>
+                    </div>
+                    <p data-i18n-html="footer.about.desc">Human In the Loop<br><br>医学影像标注平台<br><br>智能化标注解决方案</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.links.title">快速链接</h4>
+                    <ul>
+                        <li><a href="workflow.html" data-i18n="footer.links.wf">工作流程</a></li>
+                        <li><a href="environment.html" data-i18n="footer.links.env">环境配置</a></li>
+                        <li><a href="tutorial.html" data-i18n="footer.links.tut">使用教程</a></li>
+                        <li><a href="download.html" data-i18n="footer.links.dl">软件下载</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="footer.project.title">关于项目</h4>
+                    <p data-i18n="footer.project.desc">基于Qt6.9.1与3DUnetCNN开发的医学影像智能标注平台</p>
+                    <div class="footer-badges">
+                        <span class="badge badge-primary">Qt 6.9.1</span>
+                        <span class="badge badge-secondary">3DUnetCNN</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2026 HIL Platform. Human In the Loop 医学影像标注平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="../i18n.js"></script>
+</body>
+</html>
